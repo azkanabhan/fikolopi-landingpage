@@ -1,22 +1,6 @@
 import Card from "@/components/Card";
 import Section from "@/components/Section";
 
-const commercialPremium = ["Robusta", "Excelsa", "Arabica", "House Blend"];
-const specialPremium = [
-  "Luwak",
-  "Kopi Lanang",
-  "Robusta Wine",
-  "Excelsa Wine",
-  "Arabica Wine",
-];
-
-const goals = [
-  "End-to-end integration",
-  "Quality standardization",
-  "Farmer empowerment",
-  "Market expansion & education",
-];
-
 function ProductBlock({ title, items }) {
   return (
     <Card title={title}>
@@ -31,22 +15,25 @@ function ProductBlock({ title, items }) {
   );
 }
 
-export default function ProductAndGoalsSection() {
+export default function ProductAndGoalsSection({ dictionary }) {
+  const products = dictionary?.products ?? {};
+  const goals = dictionary?.goals ?? {};
+
   return (
     <>
       <Section
         id="products"
-        eyebrow="Product Classification"
-        title="Portofolio kopi premium untuk segmen komersial dan spesialti."
+        eyebrow={products.eyebrow}
+        title={products.title}
       >
         <div className="grid gap-6 lg:grid-cols-2">
-          <ProductBlock title="Commercial Premium" items={commercialPremium} />
-          <ProductBlock title="Special Premium" items={specialPremium} />
+          <ProductBlock title={products.commercial} items={products.commercialItems} />
+          <ProductBlock title={products.special} items={products.specialItems} />
         </div>
       </Section>
-      <Section id="goals" eyebrow="Project Goals" title="Arah strategis Filokopi Coffee">
+      <Section id="goals" eyebrow={goals.eyebrow} title={goals.title}>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {goals.map((goal) => (
+          {(goals.items ?? []).map((goal) => (
             <Card key={goal} title={goal} />
           ))}
         </div>
