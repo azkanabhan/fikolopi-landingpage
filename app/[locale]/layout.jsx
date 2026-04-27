@@ -5,8 +5,9 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-export function generateMetadata({ params }) {
-  const locale = isValidLocale(params.locale) ? params.locale : defaultLocale;
+export async function generateMetadata({ params }) {
+  const { locale: rawLocale } = await params;
+  const locale = isValidLocale(rawLocale) ? rawLocale : defaultLocale;
   const dictionary = getDictionary(locale);
 
   return {
@@ -22,8 +23,10 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function LocaleLayout({ children, params }) {
-  if (!isValidLocale(params.locale)) {
+export default async function LocaleLayout({ children, params }) {
+  const { locale } = await params;
+
+  if (!isValidLocale(locale)) {
     notFound();
   }
 

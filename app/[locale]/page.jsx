@@ -10,8 +10,8 @@ import VisionMissionSection from "@/sections/VisionMissionSection";
 import { getDictionary, isValidLocale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 
-export default function LocalizedHome({ params }) {
-  const { locale } = params;
+export default async function LocalizedHome({ params }) {
+  const { locale } = await params;
 
   if (!isValidLocale(locale)) {
     notFound();
