@@ -27,7 +27,7 @@ export default async function LocalizedHome({ params }) {
         <HeroSection locale={locale} dictionary={dictionary} />
         <AboutSection dictionary={dictionary} />
         <VisionMissionSection dictionary={dictionary} />
-        <ProductAndGoalsSection dictionary={dictionary} />
+        <ProductAndGoalsSection locale={locale} dictionary={dictionary} />
         <OperationsAndMarketSection dictionary={dictionary} />
         <CTASection locale={locale} dictionary={dictionary} />
       </main>

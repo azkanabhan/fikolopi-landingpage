@@ -4,7 +4,6 @@ import { useEffect } from "react";
 
 export default function RevealProvider() {
   useEffect(() => {
-    const elements = document.querySelectorAll("[data-reveal]");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -17,9 +16,40 @@ export default function RevealProvider() {
       { threshold: 0.15 }
     );
 
-    elements.forEach((element) => observer.observe(element));
+    const observeRevealElements = (root = document) => {
+      const elements = root.querySelectorAll?.("[data-reveal]") ?? [];
+      elements.forEach((element) => {
+        if (!element.classList.contains("is-visible")) {
+          observer.observe(element);
+        }
+      });
+    };
 
-    return () => observer.disconnect();
+    observeRevealElements();
+
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (!(node instanceof Element)) return;
+
+          if (node.matches("[data-reveal]") && !node.classList.contains("is-visible")) {
+            observer.observe(node);
+          }
+
+          observeRevealElements(node);
+        });
+      });
+    });
+
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
   }, []);
 
   return null;
